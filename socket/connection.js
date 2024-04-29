@@ -23,6 +23,11 @@ module.exports = (io, socket) => {
       returnMessage(2);
     }
   };
+  const handleDisconnection = () => {
+    const lastRoom = Array.from(socket.rooms)[socket.rooms.size - 1];
+    socket.to(lastRoom).emit("connect:disconnected");
+  };
   socket.on("connect:getroomid", onConnection);
   socket.on("connect:joinroom", joinRoom);
+  socket.on("disconnecting", handleDisconnection);
 };
